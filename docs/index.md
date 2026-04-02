@@ -57,7 +57,7 @@ A missão só acaba quando os seguintes artefatos forem entregues e validados po
 
 *   [ ] A imagem do *"hello world"* com o nome da sua equipe está pública e acessível no Docker Hub.
 *   [ ] O cluster Kubernetes está rodando e saudável localmente via Kind.
-*   [ ] Um arquivo **kubeconfig** válido foi entregue como relatório da missão. *Atenção técnica:* Este arquivo deve permitir o acesso ao cluster de fora da VM (lembrem-se de investigar como expor a API do Kind para a rede local).
+*   [ ] Um arquivo **kubeconfig** válido foi entregue *Atenção técnica:* Este arquivo deve permitir o acesso ao cluster de fora da VM (lembrem-se de investigar como expor a API do Kind para a rede local).
 *   [ ] O Vaultwarden está rodando, com os dados persistidos (PVC), e acessível externamente via um `Service` (NodePort ou LoadBalancer).
 
 ---
