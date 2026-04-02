@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Manifestos - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Manifestos";
+        var mkdocs_page_input_path = "fase-3-cofre/01-manifestos.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Manifestos</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#31-o-manifesto-de-deployment">3.1. O Manifesto de Deployment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#32-o-manifesto-de-service">3.2. O Manifesto de Service</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#33-a-persistencia-com-persistentvolumeclaim-pvc">3.3. A Persistência com PersistentVolumeClaim (PVC)</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 3 - O Cofre</li>
+      <li class="breadcrumb-item active">Manifestos</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="fase-3-o-cofre-deploy-storage">Fase 3: O Cofre (Deploy &amp; Storage)</h1>
+<p>Com o cluster de pé, é hora da missão principal: implantar o <strong>Vaultwarden</strong>, um cofre de senhas de código aberto, e garantir que ele seja robusto e resiliente. Isso exigirá a criação de três dos mais importantes objetos do Kubernetes.</p>
+<h2 id="31-o-manifesto-de-deployment">3.1. O Manifesto de <code>Deployment</code></h2>
+<p>Um <code>Deployment</code> é a sua garantia de que a aplicação estará sempre rodando. Ele diz ao Kubernetes qual imagem de contêiner usar e quantas réplicas dela manter em execução. Se um Pod falhar, o <code>Deployment</code> cria outro para substituí-lo.</p>
+<p><strong>Sua Missão:</strong></p>
+<ul>
+<li>
+<p>Crie um arquivo <code>vaultwarden-deployment.yaml</code>.</p>
+</li>
+<li>
+<p><strong><code>spec.template.spec.containers</code></strong>: É aqui que você define a imagem a ser usada. A imagem oficial é <code>vaultwarden/server:latest</code>.</p>
+</li>
+<li>
+<p><strong>Variáveis de Ambiente</strong>: O Vaultwarden é configurado principalmente por variáveis de ambiente. Uma crucial para começar é a <code>ADMIN_TOKEN</code>, que lhe dará acesso à interface de administração. Pesquise na documentação do Vaultwarden por outras variáveis que possam ser úteis.</p>
+</li>
+<li>
+<p><strong>Portas</strong>: Você precisa expor a porta em que a aplicação roda dentro do contêiner (a documentação da imagem dirá qual é).</p>
+</li>
+</ul>
+<h2 id="32-o-manifesto-de-service">3.2. O Manifesto de <code>Service</code></h2>
+<p>Um <code>Deployment</code> executa os Pods, mas como você acessa eles? Um <code>Service</code> expõe um conjunto de Pods (geralmente definidos por um <code>selector</code>) como um serviço de rede.</p>
+<p><strong>Sua Missão:</strong></p>
+<ul>
+<li>
+<p>Crie um arquivo <code>vaultwarden-service.yaml</code>.</p>
+</li>
+<li>
+<p><strong><code>spec.type</code></strong>: Que tipo de serviço você usará?</p>
+<ul>
+<li>
+<p><code>ClusterIP</code>: Expõe o serviço apenas dentro do cluster.</p>
+</li>
+<li>
+<p><code>NodePort</code>: Expõe o serviço em uma porta estática em cada nó do cluster. Isso torna a aplicação acessível de fora do cluster.</p>
+</li>
+<li>
+<p><code>LoadBalancer</code>: Cria um balanceador de carga externo (geralmente em provedores de nuvem).</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Para este desafio, <code>NodePort</code> é uma excelente escolha para expor seu serviço externamente de forma simples.</p>
+</li>
+<li>
+<p><strong><code>spec.selector</code></strong>: Como o <code>Service</code> sabe quais Pods pertencem a ele? A combinação de <code>labels</code> no <code>Deployment</code> e <code>selectors</code> no <code>Service</code> é a chave.</p>
+</li>
+</ul>
+<h2 id="33-a-persistencia-com-persistentvolumeclaim-pvc">3.3. A Persistência com <code>PersistentVolumeClaim</code> (PVC)</h2>
+<p>Se o Pod do Vaultwarden for reiniciado, todos os dados (senhas, usuários) serão perdidos! Para evitar essa catástrofe, você precisa de armazenamento persistente. No Kubernetes, você <em>solicita</em> armazenamento através de um <code>PersistentVolumeClaim</code> (PVC).</p>
+<p><strong>Sua Missão:</strong></p>
+<ul>
+<li>
+<p>Crie um arquivo <code>vaultwarden-pvc.yaml</code>.</p>
+</li>
+<li>
+<p><strong><code>spec.accessModes</code></strong>: Como o volume deve ser montado? <code>ReadWriteOnce</code> (pode ser montado como leitura/escrita por um único nó) é o que você provavelmente quer.</p>
+</li>
+<li>
+<p><strong><code>spec.resources.requests.storage</code></strong>: Quanto espaço você precisa? Comece com algo razoável, como <code>1Gi</code>.</p>
+</li>
+<li>
+<p><strong>Montando o Volume</strong>: Após criar o PVC, você precisa dizer ao seu <code>Deployment</code> para usá-lo. Isso é feito em duas etapas no manifesto do <code>Deployment</code>:</p>
+<ol>
+<li>
+<p>Definir o volume na seção <code>spec.template.spec.volumes</code>, apontando para o seu PVC.</p>
+</li>
+<li>
+<p>Montar esse volume em um caminho específico dentro do contêiner usando <code>spec.template.spec.containers.volumeMounts</code>. A documentação do Vaultwarden indicará qual diretório (<code>/data</code>) precisa ser persistido.</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>Dica de Ouro:</strong> O Kind vem com uma <code>StorageClass</code> padrão que provisiona <code>PersistentVolumes</code> dinamicamente a partir de diretórios no nó do cluster. Isso significa que você só precisa criar o PVC, e o Kubernetes (via Kind) cuidará de criar o <code>PersistentVolume</code> correspondente para você.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../fase-2-fundacao/01-cluster-kind/" class="btn btn-neutral float-left" title="Cluster Kind"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../fase-4-gloria/01-smtp-tls/" class="btn btn-neutral float-right" title="SMTP e TLS">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../fase-2-fundacao/01-cluster-kind/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../fase-4-gloria/01-smtp-tls/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

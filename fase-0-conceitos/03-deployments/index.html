@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Deployments - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Deployments";
+        var mkdocs_page_input_path = "fase-0-conceitos/03-deployments.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deployments</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#o-que-um-deployment-faz">O que um Deployment faz?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#como-funciona-replicasets">Como funciona? (ReplicaSets)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manifesto-yaml-basico-de-um-deployment">Manifesto YAML Básico de um Deployment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Deployments</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-3-deployments">Conceito 3: Deployments</h1>
+<p>Você raramente criará Pods diretamente no Kubernetes. Por quê? Porque um Pod, sozinho, é frágil. Se o nó em que ele está rodando falhar, ou se o processo do contêiner travar, o Pod simplesmente morre e não volta.</p>
+<p>É aqui que entra o <strong>Deployment</strong>. Ele é um controlador de alto nível que gerencia o ciclo de vida dos Pods.</p>
+<h2 id="o-que-um-deployment-faz">O que um Deployment faz?</h2>
+<p>Um <code>Deployment</code> permite que você descreva o <strong>estado desejado</strong> para sua aplicação. Você diz ao Deployment:</p>
+<ul>
+<li>"Eu quero que <strong>3 réplicas</strong> de um Pod, usando a imagem <code>nginx:1.21</code>, estejam sempre rodando no meu cluster."</li>
+</ul>
+<p>O Deployment então trabalha constantemente para garantir que a realidade (o estado atual) corresponda ao seu desejo (o estado desejado).</p>
+<ul>
+<li>
+<p><strong>Autocorreção (Self-healing)</strong>: Se um Pod gerenciado por um Deployment falha ou é deletado, o Deployment detecta a ausência e cria um novo Pod para substituí-lo.</p>
+</li>
+<li>
+<p><strong>Escalabilidade</strong>: Se você decidir que precisa de 5 réplicas em vez de 3, basta atualizar o campo <code>replicas</code> no manifesto do Deployment, e ele criará mais 2 Pods para você. Se você reduzir para 1, ele encerrará os Pods extras.</p>
+</li>
+<li>
+<p><strong>Atualizações de Aplicação</strong>: Deployments gerenciam a atualização da sua aplicação de forma controlada, sem tempo de inatividade.</p>
+<ul>
+<li>
+<p><strong>Rolling Update (Padrão)</strong>: O Deployment substitui gradualmente os Pods antigos (com a versão 1 da sua imagem) por Pods novos (com a versão 2). Ele só continua a atualização se os novos Pods iniciarem com sucesso.</p>
+</li>
+<li>
+<p><strong>Recreate</strong>: Todos os Pods antigos são encerrados de uma vez antes que os novos sejam criados. Isso causa um breve tempo de inatividade.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="como-funciona-replicasets">Como funciona? (ReplicaSets)</h2>
+<p>O <code>Deployment</code> não monitora os Pods diretamente. Ele delega essa tarefa a outro objeto chamado <strong>ReplicaSet</strong>.</p>
+<p>O fluxo é: <code>Deployment</code> -&gt; <code>ReplicaSet</code> -&gt; <code>Pods</code></p>
+<ul>
+<li>
+<p>Você cria um <code>Deployment</code>.</p>
+</li>
+<li>
+<p>O <code>Deployment</code> cria um <code>ReplicaSet</code> com base no seu <code>spec.template</code> (o template do Pod).</p>
+</li>
+<li>
+<p>O <code>ReplicaSet</code> é responsável por manter o número correto de <code>Pods</code> em execução.</p>
+</li>
+</ul>
+<p>Quando você atualiza a imagem no seu <code>Deployment</code>, ele cria um <em>novo</em> <code>ReplicaSet</code> com a nova versão e gradualmente aumenta a escala do novo ReplicaSet enquanto diminui a do antigo. Isso permite atualizações seguras e a capacidade de reverter para a versão anterior, se necessário.</p>
+<h2 id="manifesto-yaml-basico-de-um-deployment">Manifesto YAML Básico de um Deployment</h2>
+<pre><code class="language-yaml"># deployment-exemplo.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meu-deployment-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-server
+  template:
+    metadata:
+      labels:
+        app: nginx-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+</code></pre>
+<p><strong>Analisando o manifesto:</strong></p>
+<ul>
+<li>
+<p><strong><code>apiVersion: apps/v1</code></strong>: Deployments vivem na API <code>apps/v1</code>.</p>
+</li>
+<li>
+<p><strong><code>spec.replicas: 3</code></strong>: O estado desejado. Queremos 3 cópias do nosso Pod.</p>
+</li>
+<li>
+<p><strong><code>spec.selector.matchLabels</code></strong>: O seletor do Deployment. Ele precisa saber quais Pods ele deve gerenciar. Ele vai "adotar" todos os Pods que correspondam a esta label.</p>
+</li>
+<li>
+<p><strong><code>spec.template</code></strong>: Este é o "molde" para os Pods que o Deployment criará.</p>
+<ul>
+<li>
+<p><strong><code>metadata.labels</code></strong>: As labels que serão aplicadas a cada Pod criado. <strong>Crucial:</strong> Estas labels devem corresponder ao <code>spec.selector.matchLabels</code> do Deployment! É assim que ele encontra seus próprios filhos.</p>
+</li>
+<li>
+<p><strong><code>spec</code></strong>: A especificação do contêiner, exatamente como vimos no manifesto do Pod.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Em resumo: <strong>Use sempre um <code>Deployment</code> (ou outro controlador como um <code>StatefulSet</code> ou <code>DaemonSet</code>) para gerenciar seus Pods.</strong> Nunca crie Pods órfãos.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../02-labels-e-selectors/" class="btn btn-neutral float-left" title="Labels e Selectors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../04-services/" class="btn btn-neutral float-right" title="Services">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../02-labels-e-selectors/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../04-services/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

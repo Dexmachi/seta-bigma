@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>ConfigMaps e Secrets - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ConfigMaps e Secrets";
+        var mkdocs_page_input_path = "fase-0-conceitos/06-configmaps-e-secrets.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">ConfigMaps e Secrets</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#configmap">ConfigMap</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#secret">Secret</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#como-usar-configmaps-e-secrets-em-pods">Como Usar ConfigMaps e Secrets em Pods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-como-variaveis-de-ambiente">1. Como Variáveis de Ambiente</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-como-arquivos-em-um-volume">2. Como Arquivos em um Volume</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">ConfigMaps e Secrets</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-6-configmaps-e-secrets">Conceito 6: ConfigMaps e Secrets</h1>
+<p>Uma boa prática de desenvolvimento de software (os "12 Fatores") diz que a <strong>configuração</strong> de uma aplicação deve ser estritamente separada do seu <strong>código</strong>. Você não deve ter URLs de bancos de dados ou chaves de API "hardcoded" na sua imagem de contêiner.</p>
+<p>O Kubernetes fornece dois objetos principais para gerenciar esses dados externos: <code>ConfigMaps</code> e <code>Secrets</code>.</p>
+<h2 id="configmap"><code>ConfigMap</code></h2>
+<ul>
+<li>
+<p><strong>O que é?</strong> Um objeto usado para armazenar dados de configuração não sensíveis em pares de chave-valor.</p>
+</li>
+<li>
+<p><strong>Para que serve?</strong> Para desacoplar a configuração da aplicação. Você pode injetar esses valores em seus Pods em tempo de execução. Isso permite que você use a mesma imagem de contêiner em diferentes ambientes (desenvolvimento, staging, produção) simplesmente apontando-a para um <code>ConfigMap</code> diferente em cada ambiente.</p>
+</li>
+<li>
+<p><strong>O que armazenar?</strong> URLs de serviços, flags de feature, variáveis de ambiente, ou até mesmo arquivos de configuração inteiros (como um <code>nginx.conf</code>).</p>
+</li>
+</ul>
+<p><strong>Exemplo de Manifesto:</strong></p>
+<pre><code class="language-yaml"># configmap-exemplo.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meu-configmap
+data:
+  # Configuração como par chave-valor
+  database.url: &quot;jdbc:postgresql://db.example.com:5432&quot;
+  api.endpoint: &quot;https://api.example.com/v1&quot;
+
+  # Configuração como um arquivo inteiro
+  ui.properties: |
+    color.background=blue
+    font.size=14
+</code></pre>
+<h2 id="secret"><code>Secret</code></h2>
+<ul>
+<li>
+<p><strong>O que é?</strong> Um objeto muito similar a um <code>ConfigMap</code>, mas projetado especificamente para armazenar <strong>dados sensíveis</strong>.</p>
+</li>
+<li>
+<p><strong>Para que serve?</strong> Para armazenar credenciais, tokens, chaves de API, certificados TLS, etc.</p>
+</li>
+<li>
+<p><strong>Qual a diferença para um ConfigMap?</strong></p>
+<ol>
+<li>
+<p><strong>Codificação</strong>: Os valores em um <code>Secret</code> são armazenados em <code>base64</code> por padrão. <strong>Atenção:</strong> Isso é codificação, <strong>não criptografia</strong>. Qualquer um com acesso ao Secret pode decodificar os valores facilmente. A principal razão para isso é evitar que os segredos sejam acidentalmente expostos em logs ou na tela.</p>
+</li>
+<li>
+<p><strong>Segurança Adicional</strong>: O Kubernetes aplica algumas medidas de segurança extras para <code>Secrets</code>. Por exemplo, eles são armazenados em <code>tmpfs</code> (um sistema de arquivos em memória) nos nós, em vez de serem escritos em disco, e não são exibidos por padrão em comandos como <code>kubectl describe</code>.</p>
+</li>
+<li>
+<p><strong>Criptografia em Repouso</strong>: É possível (e altamente recomendado em produção) configurar o Kubernetes para criptografar os dados dos <code>Secrets</code> no seu banco de dados etcd (criptografia em repouso).</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>Exemplo de Manifesto:</strong></p>
+<pre><code class="language-yaml"># secret-exemplo.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: meu-secret
+type: Opaque  # Tipo padrão para dados arbitrários
+data:
+  # Os valores DEVEM estar em base64
+  # echo -n 'meu-usuario-super-secreto' | base64
+  username: bWV1LXVzdWFyaW8tc3VwZXItc2VjcmV0bw==
+  # echo -n 'minha-senha-12345' | base64
+  password: bWluaGEtc2VuaGEtMTIzNDU=
+</code></pre>
+<h2 id="como-usar-configmaps-e-secrets-em-pods">Como Usar ConfigMaps e Secrets em Pods</h2>
+<p>Existem duas maneiras principais de consumir esses dados dentro de um Pod:</p>
+<h3 id="1-como-variaveis-de-ambiente">1. Como Variáveis de Ambiente</h3>
+<p>Esta é a abordagem mais comum. Você pode mapear chaves de um <code>ConfigMap</code> ou <code>Secret</code> diretamente para variáveis de ambiente no seu contêiner.</p>
+<pre><code class="language-yaml"># pod-usando-config.yaml
+spec:
+  containers:
+  - name: meu-container
+    image: minha-app
+    env:
+      - name: DATABASE_URL
+        valueFrom:
+          configMapKeyRef:
+            name: meu-configmap # Nome do ConfigMap
+            key: database.url  # Chave a ser usada
+      - name: API_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: meu-secret     # Nome do Secret
+            key: password      # Chave a ser usada
+</code></pre>
+<h3 id="2-como-arquivos-em-um-volume">2. Como Arquivos em um Volume</h3>
+<p>Você pode montar um <code>ConfigMap</code> ou <code>Secret</code> inteiro como um volume. Cada chave no objeto se torna um arquivo no diretório montado. Isso é ideal para injetar arquivos de configuração completos.</p>
+<pre><code class="language-yaml"># pod-montando-config.yaml
+spec:
+  containers:
+  - name: meu-container
+    image: minha-app
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config
+  volumes:
+  - name: config-volume
+    configMap:
+      name: meu-configmap
+</code></pre>
+<p>Neste exemplo, um arquivo chamado <code>database.url</code> e outro chamado <code>ui.properties</code> apareceriam dentro do diretório <code>/etc/config</code> no contêiner.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../05-volumes-e-pvc/" class="btn btn-neutral float-left" title="Volumes e PVCs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../07-namespaces/" class="btn btn-neutral float-right" title="Namespaces">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../05-volumes-e-pvc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../07-namespaces/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

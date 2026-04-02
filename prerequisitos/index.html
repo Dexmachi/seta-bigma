@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Pré-requisitos - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Pr\u00e9-requisitos";
+        var mkdocs_page_input_path = "prerequisitos.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Início</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Pré-requisitos</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-acesso-e-permissoes">1. Acesso e Permissões</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-ferramentas-necessarias">2. Ferramentas Necessárias</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-contas-em-servicos-externos">3. Contas em Serviços Externos</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-0-conceitos/08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Pré-requisitos</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="pre-requisitos-da-missao">🛠️ Pré-requisitos da Missão</h1>
+<p>Antes de iniciar as fases do desafio, certifique-se de que o seu ambiente está configurado com as ferramentas e acessos necessários.</p>
+<h2 id="1-acesso-e-permissoes">1. Acesso e Permissões</h2>
+<ul>
+<li><strong>Máquinas Virtuais (VMs):</strong> Garanta o acesso às VMs disponibilizadas para o laboratório.</li>
+<li><strong>Usuário de Operação:</strong> É obrigatório operar com as permissões corretas. Após acessar a VM, utilize o comando:
+    <code>bash
+    su - lappis</code></li>
+</ul>
+<h2 id="2-ferramentas-necessarias">2. Ferramentas Necessárias</h2>
+<p>Os seguintes softwares devem estar instalados e configurados no seu ambiente de trabalho (VM) para o sucesso da operação:</p>
+<ul>
+<li><strong>Docker (ou similar):</strong> Necessário para a Fase 1 (criar, construir e fazer o push de imagens de contêiner). Ferramentas como Docker CLI ou Buildah são aceitas.</li>
+<li><strong>Kind (Kubernetes IN Docker):</strong> Obrigatório para a Fase 2. Será a ferramenta exclusiva para subir o cluster Kubernetes local.</li>
+<li><strong>kubectl:</strong> A ferramenta de linha de comando padrão para interagir com a API do cluster Kubernetes. Essencial para aplicar os manifestos e gerenciar os recursos criados.</li>
+<li><strong>k9s:</strong> Uma interface de terminal (TUI) poderosa para interagir com os clusters. Vai facilitar imensamente a visualização, navegação e o troubleshooting de Pods, Deployments e PVCs durante a batalha.</li>
+</ul>
+<h2 id="3-contas-em-servicos-externos">3. Contas em Serviços Externos</h2>
+<ul>
+<li><strong>Docker Hub:</strong> Será necessário ter uma conta (da equipe ou de um integrante) para realizar o push e hospedar a imagem pública exigida na Fase 1.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Início"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../fase-0-conceitos/01-pods/" class="btn btn-neutral float-right" title="Pods">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../fase-0-conceitos/01-pods/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

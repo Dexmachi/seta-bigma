@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>SMTP e TLS - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "SMTP e TLS";
+        var mkdocs_page_input_path = "fase-4-gloria/01-smtp-tls.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">SMTP e TLS</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#41-configurando-um-servidor-smtp">4.1. Configurando um Servidor SMTP</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#42-tlshttps-a-punicao-e-a-gloria">4.2. TLS/HTTPS: A Punição e a Glória</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#caminho-a-o-padrao-de-mercado-ingress-cert-manager">Caminho A: O Padrão de Mercado (Ingress + Cert-Manager)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#caminho-b-o-modo-direto-tls-no-vaultwarden">Caminho B: O Modo Direto (TLS no Vaultwarden)</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 4 - A Glória</li>
+      <li class="breadcrumb-item active">SMTP e TLS</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="fase-4-a-gloria-features-extras">Fase 4: A Glória (Features Extras)</h1>
+<p>Seu cofre está no ar, funcional e persistente. Isso já é uma grande vitória. Mas para a <strong>Equipe Sigma</strong>, "funcional" é apenas o ponto de partida. "Pronto para produção" é o objetivo. Nesta fase, você adicionará funcionalidades que transformam um serviço de laboratório em algo robusto.</p>
+<p>Cada feature implementada com sucesso vale pontos preciosos.</p>
+<h2 id="41-configurando-um-servidor-smtp">4.1. Configurando um Servidor SMTP</h2>
+<p>Um cofre de senhas que não pode enviar e-mails para convidar novos usuários ou recuperar contas é apenas um banco de dados glorificado. Configurar um servidor SMTP é essencial.</p>
+<p><strong>Sua Missão:</strong></p>
+<ul>
+<li>
+<p>Investigue a documentação do Vaultwarden para descobrir quais <strong>variáveis de ambiente</strong> são usadas para configurar os detalhes do SMTP (host, porta, usuário, senha, etc.).</p>
+</li>
+<li>
+<p>Você pode usar serviços como o <strong>SendGrid</strong> ou até mesmo uma conta do <strong>Gmail</strong> (com "senhas de app") para obter um servidor SMTP funcional.</p>
+</li>
+<li>
+<p><strong>Como atualizar?</strong> Você precisará editar seu <code>Deployment</code> para adicionar essas novas variáveis de ambiente. O <code>kubectl</code> é seu amigo. O comando <code>kubectl apply -f seu-manifesto.yaml</code> é inteligente o suficiente para aplicar apenas as mudanças, sem derrubar o que já está funcionando.</p>
+</li>
+</ul>
+<h2 id="42-tlshttps-a-punicao-e-a-gloria">4.2. TLS/HTTPS: A Punição e a Glória</h2>
+<p>A regra é clara: um cofre sem TLS não é um cofre, é um alvo. Implementar HTTPS não é apenas uma feature extra, é uma necessidade de segurança fundamental.</p>
+<p>Esta é, de longe, a tarefa mais complexa e a que mais diferencia uma equipe júnior de uma sênior. Existem alguns caminhos para a vitória:</p>
+<h3 id="caminho-a-o-padrao-de-mercado-ingress-cert-manager">Caminho A: O Padrão de Mercado (Ingress + Cert-Manager)</h3>
+<p>Esta é a forma como a maioria das aplicações em produção no Kubernetes lida com TLS.</p>
+<ol>
+<li>
+<p><strong>Ingress Controller</strong>: Um Ingress Controller (como o popular <strong>NGINX Ingress</strong>) atua como um proxy reverso dentro do cluster. Ele direciona o tráfego externo para os <code>Services</code> internos com base em regras (ex: <code>host</code> ou <code>path</code>). Instale um no seu cluster.</p>
+</li>
+<li>
+<p><strong>Cert-Manager</strong>: Este é um "operador" do Kubernetes que automatiza a criação e renovação de certificados TLS. Ele pode se conectar a autoridades certificadoras como a <strong>Let's Encrypt</strong> para obter certificados gratuitos e válidos.</p>
+</li>
+<li>
+<p><strong>A Mágica</strong>: Você cria um recurso do tipo <code>Ingress</code> que aponta para o seu <code>Service</code> do Vaultwarden e adiciona anotações especiais que dizem ao <code>cert-manager</code> para obter um certificado para aquele host.</p>
+</li>
+</ol>
+<p><strong>Prós:</strong> Extremamente robusto, escalável e automatizado.
+<strong>Contras:</strong> Requer a instalação e configuração de dois componentes complexos.</p>
+<h3 id="caminho-b-o-modo-direto-tls-no-vaultwarden">Caminho B: O Modo Direto (TLS no Vaultwarden)</h3>
+<p>O próprio Vaultwarden (via seu servidor web Rocket) pode ser configurado para servir tráfego em HTTPS diretamente.</p>
+<p><strong>Sua Missão:</strong></p>
+<ol>
+<li>
+<p>Obtenha um certificado TLS. Para um teste local, você pode gerar um <strong>certificado autoassinado</strong> usando <code>openssl</code>.</p>
+</li>
+<li>
+<p>Crie um <code>Secret</code> do Kubernetes do tipo <code>kubernetes.io/tls</code> para armazenar seus arquivos de certificado e chave privada (<code>tls.crt</code>, <code>tls.key</code>).</p>
+</li>
+<li>
+<p>Monte este <code>Secret</code> como um volume dentro do seu Pod do Vaultwarden.</p>
+</li>
+<li>
+<p>Configure as variáveis de ambiente do Vaultwarden para habilitar o HTTPS e apontar para os caminhos dos arquivos de certificado e chave que você montou.</p>
+</li>
+</ol>
+<p><strong>Prós:</strong> Mais simples, menos componentes para instalar.
+<strong>Contras:</strong> Certificados autoassinados geram alertas no navegador. A renovação manual é impraticável para produção.</p>
+<p>A escolha da estratégia é sua. Ambas as soluções, se bem implementadas, cumprem o requisito. Ao seguir o caminho A, você recebe 2 pontos a mais (duh, você subiu 2 aplicações extras no clusters), mas recomendo o caminho B. Alertas de certificados autoassinados são aceitáveis para um ambiente de laboratório, e a simplicidade é uma virtude. O importante é que o TLS esteja funcionando, garantindo que as comunicações com o cofre sejam seguras.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../fase-3-cofre/01-manifestos/" class="btn btn-neutral float-left" title="Manifestos"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../fase-3-cofre/01-manifestos/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

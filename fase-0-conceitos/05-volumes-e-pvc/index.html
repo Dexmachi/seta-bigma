@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Volumes e PVCs - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Volumes e PVCs";
+        var mkdocs_page_input_path = "fase-0-conceitos/05-volumes-e-pvc.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Volumes e PVCs</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#a-abstracao-da-persistencia-pv-pvc-e-storageclass">A Abstração da Persistência: PV, PVC e StorageClass</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#persistentvolume-pv">PersistentVolume (PV)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#persistentvolumeclaim-pvc">PersistentVolumeClaim (PVC)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#storageclass">StorageClass</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exemplo-de-manifesto-de-pvc">Exemplo de Manifesto de PVC</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Volumes e PVCs</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-5-volumes-e-persistencia-pv-pvc-storageclass">Conceito 5: Volumes e Persistência (PV, PVC, StorageClass)</h1>
+<p>Contêineres são projetados para serem efêmeros. Se um Pod que executa um banco de dados for reiniciado, todos os dados dentro do contêiner serão perdidos. Para aplicações que precisam manter o estado (quase todas as aplicações reais), o Kubernetes fornece um sistema de <strong>Volumes</strong>.</p>
+<h2 id="volumes">Volumes</h2>
+<p>Um <code>Volume</code> é, em essência, um diretório que é montado em um ou mais contêineres de um Pod. A principal característica de um <code>Volume</code> é que seu ciclo de vida é independente do contêiner. Se o contêiner for reiniciado, o <code>Volume</code> permanece, e os dados são preservados.</p>
+<p>Existem muitos tipos de volumes (<code>emptyDir</code>, <code>hostPath</code>, <code>nfs</code>, etc.), mas para persistência de dados real, usamos um sistema de abstração mais poderoso.</p>
+<h2 id="a-abstracao-da-persistencia-pv-pvc-e-storageclass">A Abstração da Persistência: PV, PVC e StorageClass</h2>
+<p>O Kubernetes lida com armazenamento da mesma forma que lida com computação: de forma abstrata e desacoplada da infraestrutura.</p>
+<h3 id="persistentvolume-pv"><code>PersistentVolume</code> (PV)</h3>
+<ul>
+<li>
+<p><strong>O que é?</strong> Uma "fatia" de armazenamento no cluster que foi provisionada por um administrador.</p>
+</li>
+<li>
+<p><strong>Analogia:</strong> Pense em um <code>PersistentVolume</code> como um "disco rígido" que foi plugado no cluster. Ele é um recurso do cluster, assim como um nó. Ele tem um tamanho, um tipo (ex: "disco rápido SSD", "disco lento magnético") e um modo de acesso.</p>
+</li>
+<li>
+<p><strong>Quem gerencia?</strong> Geralmente, o administrador do cluster. Os desenvolvedores não interagem com os PVs diretamente.</p>
+</li>
+</ul>
+<h3 id="persistentvolumeclaim-pvc"><code>PersistentVolumeClaim</code> (PVC)</h3>
+<ul>
+<li>
+<p><strong>O que é?</strong> Uma <strong>solicitação</strong> de armazenamento feita por um usuário/desenvolvedor.</p>
+</li>
+<li>
+<p><strong>Analogia:</strong> Se o PV é o disco rígido, a <code>PersistentVolumeClaim</code> (Reivindicação de Volume Persistente) é o "pedido de compra" que o desenvolvedor faz. "Eu preciso de 10GB de armazenamento que seja rápido e que eu possa ler e escrever".</p>
+</li>
+<li>
+<p><strong>Como funciona?</strong> O Kubernetes tenta satisfazer o PVC encontrando um PV compatível que atenda aos requisitos da solicitação (tamanho, modo de acesso, etc.). Se encontrar um, ele "liga" (binds) o PVC ao PV. A partir desse momento, aquele PV pertence exclusivamente àquele PVC.</p>
+</li>
+</ul>
+<p>O Pod, então, não monta o PV diretamente. Ele monta o <strong>PVC</strong>.</p>
+<p><strong>Fluxo:</strong> <code>Pod</code> -&gt; usa um -&gt; <code>PVC</code> -&gt; que está ligado a um -&gt; <code>PV</code> -&gt; que representa o armazenamento físico.</p>
+<p>Isso é poderoso porque desacopla a aplicação (Pod) da infraestrutura de armazenamento (PV). O desenvolvedor só precisa saber o que ele quer (o PVC), não como ou onde o armazenamento é realmente fornecido.</p>
+<h3 id="storageclass"><code>StorageClass</code></h3>
+<ul>
+<li>
+<p><strong>O que é?</strong> Um objeto que descreve os "tipos" de armazenamento disponíveis. Define o que significa "disco rápido" ou "disco lento".</p>
+</li>
+<li>
+<p><strong>Provisionamento Dinâmico:</strong> É aqui que a mágica acontece. Em vez de um administrador ter que criar <code>PersistentVolumes</code> manualmente, uma <code>StorageClass</code> pode ser configurada para <strong>provisionar dinamicamente</strong> um PV sempre que um PVC a solicita.</p>
+</li>
+<li>
+<p><strong>Como funciona?</strong></p>
+<ol>
+<li>
+<p>O desenvolvedor cria um PVC que especifica o nome de uma <code>StorageClass</code>.</p>
+</li>
+<li>
+<p>A <code>StorageClass</code> contém as instruções para o provedor de armazenamento (ex: AWS EBS, GCE Persistent Disk, ou no caso do Kind, um diretório local) criar um novo volume físico.</p>
+</li>
+<li>
+<p>Um novo <code>PersistentVolume</code> é criado automaticamente para representar esse volume físico.</p>
+</li>
+<li>
+<p>O PVC é ligado a esse novo PV.</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>O Kind vem com uma <code>StorageClass</code> padrão que faz exatamente isso, usando diretórios no seu computador como armazenamento físico. É por isso que no nosso desafio, você só precisa criar o PVC e todo o resto acontece automaticamente!</p>
+<h2 id="exemplo-de-manifesto-de-pvc">Exemplo de Manifesto de PVC</h2>
+<pre><code class="language-yaml"># pvc-exemplo.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meu-pvc-para-dados
+spec:
+  # storageClassName: standard  # Opcional se houver uma SC padrão
+  accessModes:
+    - ReadWriteOnce  # Pode ser montado como R/W por um único nó
+  resources:
+    requests:
+      storage: 5Gi  # Solicitação de 5 Gigabytes de armazenamento
+</code></pre>
+<p>Depois de criado, você pode referenciar <code>meu-pvc-para-dados</code> no manifesto do seu <code>Deployment</code> para montar este volume persistente dentro do seu Pod.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../04-services/" class="btn btn-neutral float-left" title="Services"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../06-configmaps-e-secrets/" class="btn btn-neutral float-right" title="ConfigMaps e Secrets">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../04-services/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../06-configmaps-e-secrets/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

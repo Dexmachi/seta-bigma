@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="Treinamento prático Kubernetes para construir um cofre de senhas funcional e resiliente." /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "In\u00edcio";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Início</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#fase-0-conceitos-fundamentais-leitura-recomendada">📚 Fase 0: Conceitos Fundamentais (Leitura Recomendada)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#objetivos-da-missao-o-caminho">🎯 Objetivos da Missão (O Caminho)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#fase-1-o-aquecimento-docker">Fase 1: O Aquecimento (Docker)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fase-2-a-fundacao-kubernetes">Fase 2: A Fundação (Kubernetes)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fase-3-o-cofre-deploy-storage">Fase 3: O Cofre (Deploy &amp; Storage)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fase-4-a-gloria-features-extras">Fase 4: A Glória (Features Extras)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#definition-of-done-criterios-de-aceite">✅ Definition of Done (Critérios de Aceite)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#regras-de-engajamento-e-pontuacao">🏆 Regras de Engajamento e Pontuação</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-0-conceitos/08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Início</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="operacao-kubernetes-equipe-seta-vs-equipe-bigma">🌩️ Operação Kubernetes: Equipe Seta vs Equipe Bigma</h1>
+<p>Aqui quem fala é o líder da operação, Dexmachina. Bem-vindos ao campo de batalha.</p>
+<p>O objetivo de vocês nesta tarde é ir do absoluto zero no Kubernetes (<em>"from zero to hero"</em>) até colocar um cofre de senhas funcional e resiliente de pé. Vocês foram divididos em duas equipes. O conhecimento de uma equipe completa a outra, mas no fim do dia, apenas uma sairá inteira.</p>
+<p><strong>Lembrete de acesso:</strong> Nas VMs disponibilizadas, garantam que estão operando com as permissões corretas utilizando <code>su - lappis</code>.</p>
+<hr />
+<h2 id="fase-0-conceitos-fundamentais-leitura-recomendada">📚 Fase 0: Conceitos Fundamentais (Leitura Recomendada)</h2>
+<p>Antes de mergulhar na prática, é crucial entender os blocos de construção do Kubernetes. Esta seção serve como seu glossário e base de conhecimento. (NÃO LEIA ISSO SE VOCÊ NÃO PRECISAR, USE APENAS QUANDO FOR NECESSÁRIO DURANTE AS FASES PRÁTICAS)</p>
+<ul>
+<li>
+<p><a href="fase-0-conceitos/01-pods/"><strong>01 - Pods</strong></a>: A menor unidade de computação do Kubernetes.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/02-labels-e-selectors/"><strong>02 - Labels e Selectors</strong></a>: O sistema de "etiquetas" que conecta tudo.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/03-deployments/"><strong>03 - Deployments</strong></a>: Como garantir que sua aplicação esteja sempre rodando.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/04-services/"><strong>04 - Services</strong></a>: Como expor sua aplicação para o mundo e outros serviços.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/05-volumes-e-pvc/"><strong>05 - Volumes e PVCs</strong></a>: Como garantir que seus dados não desapareçam.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/06-configmaps-e-secrets/"><strong>06 - ConfigMaps e Secrets</strong></a>: Como gerenciar configurações e segredos.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/07-namespaces/"><strong>07 - Namespaces</strong></a>: Como organizar o cluster em "fatias" virtuais.</p>
+</li>
+<li>
+<p><a href="fase-0-conceitos/08-ingress/"><strong>08 - Ingress</strong></a>: O porteiro inteligente para seus serviços.</p>
+</li>
+</ul>
+<hr />
+<h2 id="objetivos-da-missao-o-caminho">🎯 Objetivos da Missão (O Caminho)</h2>
+<p>Sua jornada é dividida em etapas. Não tentem pular os degraus. A documentação detalhada para cada fase guiará vocês pela escuridão.</p>
+<h3 id="fase-1-o-aquecimento-docker">Fase 1: O Aquecimento (Docker)</h3>
+<ul>
+<li><a href="fase-1-docker/01-docker/">Guia da Fase 1</a>: Criar uma imagem Docker básica rodando uma aplicação absurdamente simples (um script de <em>"hello world"</em> em qualquer linguagem serve).</li>
+<li>Fazer o push dessa imagem para um repositório público no <strong>Docker Hub</strong>. <em>(Dica: Usem qualquer ferramenta que preferirem: Docker CLI, Buildah, etc).</em></li>
+</ul>
+<h3 id="fase-2-a-fundacao-kubernetes">Fase 2: A Fundação (Kubernetes)</h3>
+<ul>
+<li><a href="fase-2-fundacao/01-cluster-kind/">Guia da Fase 2</a>: Subir um cluster Kubernetes local dentro da VM utilizando a ferramenta <strong>Kind</strong> (E APENAS KIND).</li>
+</ul>
+<h3 id="fase-3-o-cofre-deploy-storage">Fase 3: O Cofre (Deploy &amp; Storage)</h3>
+<ul>
+<li><a href="fase-3-cofre/01-manifestos/">Guia da Fase 3</a>: Criar um manifesto de <code>Deployment</code> e um de <code>Service</code> para subir uma instância do <strong>Vaultwarden</strong>.<ul>
+<li><em>Aviso de sanidade:</em> Usem a imagem oficial do Vaultwarden no Docker Hub. Pelo amor de Deus, não tentem buildar o Vaultwarden do zero no cluster, ou a VM não vai aguentar.</li>
+</ul>
+</li>
+<li>Configurar um <strong>PVC (Persistent Volume Claim)</strong> atrelado ao Deployment. Se o Pod for deletado pelo K9s, as senhas não podem sumir no limbo.</li>
+</ul>
+<h3 id="fase-4-a-gloria-features-extras">Fase 4: A Glória (Features Extras)</h3>
+<ul>
+<li><a href="fase-4-gloria/01-smtp-tls/">Guia da Fase 4</a>: Adicionar features relevantes ao Vaultwarden para torná-lo pronto para produção (ex: configurar um servidor SMTP para envio de e-mails, TLS/HTTPS, etc).</li>
+</ul>
+<hr />
+<h2 id="definition-of-done-criterios-de-aceite">✅ Definition of Done (Critérios de Aceite)</h2>
+<p>A missão só acaba quando os seguintes artefatos forem entregues e validados por mim:</p>
+<ul>
+<li>[ ] A imagem do <em>"hello world"</em> com o nome da sua equipe está pública e acessível no Docker Hub.</li>
+<li>[ ] O cluster Kubernetes está rodando e saudável localmente via Kind.</li>
+<li>[ ] Um arquivo <strong>kubeconfig</strong> válido foi entregue como relatório da missão. <em>Atenção técnica:</em> Este arquivo deve permitir o acesso ao cluster de fora da VM (lembrem-se de investigar como expor a API do Kind para a rede local).</li>
+<li>[ ] O Vaultwarden está rodando, com os dados persistidos (PVC), e acessível externamente via um <code>Service</code> (NodePort ou LoadBalancer).</li>
+</ul>
+<hr />
+<h2 id="regras-de-engajamento-e-pontuacao">🏆 Regras de Engajamento e Pontuação</h2>
+<p>O tempo está correndo e a guerra de pontos define o destino de vocês:</p>
+<ol>
+<li><strong>Velocidade de Execução:</strong> A primeira equipe a bater todos os critérios do DOD recebe <strong>5 pontos</strong>. A segunda recebe <strong>3 pontos</strong>.</li>
+<li><strong>Features Adicionais:</strong> A cada feature extra funcional implementada no Vaultwarden, a equipe ganha <strong>2 pontos extras</strong>.</li>
+<li><strong>A Punição do TLS:</strong> Um cofre sem segurança é um alvo fácil. Ao fim da atividade, caso a equipe <em>não</em> tenha implementado um sistema de TLS (HTTPS) funcional, <strong>todos os pontos extras conquistados serão cortados pela metade</strong> (arredondados para baixo). O próprio TLS conta como uma feature e adiciona 2 pontos antes do corte.</li>
+<li><strong>A Punição do PVC:</strong> Se o cofre não tiver um PVC funcional, a equipe perde <strong>4 pontos</strong>. Se o PVC estiver presente mas não for configurado corretamente (ex: não persiste os dados), a penalidade é de <strong>3 pontos</strong>.</li>
+<li><strong>O Julgamento Final:</strong> A equipe que somar mais pontos rouba a parte do nome que falta da outra. A vencedora se funde e se torna a suprema <strong>Equipe Sigma</strong>. A perdedora é rebaixada para <strong>Equipe Betinha</strong>.</li>
+<li><strong>A Regra de Ouro:</strong> Não sobra nada pros betinhas. A Equipe Sigma ganha um prêmio surpresa ao final do laboratório.</li>
+</ol>
+<p>Boa sorte.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="prerequisitos/" class="btn btn-neutral float-right" title="Pré-requisitos">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="prerequisitos/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-04-02 11:26:25.370824+00:00
+-->

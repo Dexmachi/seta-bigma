@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Labels e Selectors - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Labels e Selectors";
+        var mkdocs_page_input_path = "fase-0-conceitos/02-labels-e-selectors.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Labels e Selectors</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#labels-etiquetas">Labels (Etiquetas)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#selectors-seletores">Selectors (Seletores)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#a-conexao-na-pratica">A Conexão na Prática</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Labels e Selectors</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-2-labels-e-selectors">Conceito 2: Labels e Selectors</h1>
+<p>Se os Pods, Deployments e Services são os atores no palco do Kubernetes, <strong>Labels (Etiquetas)</strong> e <strong>Selectors (Seletores)</strong> são o roteiro que diz a eles como interagir. Eles são o mecanismo de "cola" que conecta os diferentes componentes.</p>
+<h2 id="labels-etiquetas">Labels (Etiquetas)</h2>
+<ul>
+<li>
+<p><strong>O que são?</strong> Pares de chave/valor (ex: <code>app: frontend</code>) que você anexa aos seus objetos do Kubernetes (Pods, Services, etc.).</p>
+</li>
+<li>
+<p><strong>Para que servem?</strong> Para organizar e identificar recursos de forma flexível. Um objeto pode ter múltiplas labels.</p>
+</li>
+<li>
+<p><strong>São arbitrários?</strong> Sim. Você pode usar as chaves e valores que fizerem sentido para sua organização. Boas práticas comuns incluem:</p>
+<ul>
+<li>
+<p><code>app</code>: O nome da aplicação (ex: <code>app: vaultwarden</code>).</p>
+</li>
+<li>
+<p><code>tier</code>: A camada da aplicação (ex: <code>tier: backend</code>, <code>tier: database</code>).</p>
+</li>
+<li>
+<p><code>env</code>: O ambiente (ex: <code>env: production</code>, <code>env: staging</code>).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Exemplo em um manifesto de Pod:</strong></p>
+<pre><code class="language-yaml"># pod-com-labels.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-com-labels
+  labels:
+    app: meu-app-web
+    tier: frontend
+    env: development
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+</code></pre>
+<p>Este Pod agora está "marcado" com três etiquetas que descrevem seu papel no sistema.</p>
+<h2 id="selectors-seletores">Selectors (Seletores)</h2>
+<ul>
+<li><strong>O que são?</strong> Uma forma de consultar e selecionar objetos do Kubernetes com base em suas labels.</li>
+<li><strong>Para que servem?</strong> Para criar a conexão lógica entre os objetos. Por exemplo, um <code>Service</code> precisa saber quais <code>Pods</code> ele deve gerenciar e para quais ele deve enviar tráfego. Ele faz isso usando um seletor.</li>
+</ul>
+<p>Existem dois tipos principais de seletores, mas o mais comum é o de <strong>igualdade</strong>:</p>
+<p><code>selector:</code>
+  <code>app: meu-app-web</code>
+  <code>tier: frontend</code></p>
+<p>Este seletor irá corresponder a <strong>todos</strong> os objetos que tenham <strong>ambas</strong> as labels <code>app: meu-app-web</code> E <code>tier: frontend</code>.</p>
+<h2 id="a-conexao-na-pratica">A Conexão na Prática</h2>
+<p>Vamos ver como um <code>Service</code> usa um seletor para encontrar Pods.</p>
+<p><strong>O Pod (com sua label):</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  labels:
+    app: meu-servico-backend # &lt;-- A LABEL!
+spec:
+  containers:
+  - name: app-container
+    image: minha-app
+</code></pre>
+<p><strong>O Service (com seu seletor):</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: meu-servico-de-backend
+spec:
+  selector:
+    app: meu-servico-backend # &lt;-- O SELECTOR!
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+</code></pre>
+<p><strong>A Mágica:</strong> O <code>Service</code> chamado <code>meu-servico-de-backend</code> usará seu seletor para procurar por todos os Pods que tenham a etiqueta <code>app: meu-servico-backend</code>. Ele encontrará o <code>pod-1</code> e automaticamente começará a enviar tráfego de rede para a porta <code>8080</code> dele.</p>
+<p>Se você criar um <code>pod-2</code> com a mesma label, o Service o encontrará e começará a balancear a carga entre os dois Pods. Se você remover a label de um Pod, o Service deixará de enviar tráfego para ele. É um sistema dinâmico e desacoplado, e é um dos conceitos mais poderosos do Kubernetes.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../01-pods/" class="btn btn-neutral float-left" title="Pods"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../03-deployments/" class="btn btn-neutral float-right" title="Deployments">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../01-pods/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../03-deployments/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

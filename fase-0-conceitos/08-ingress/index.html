@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Ingress - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Ingress";
+        var mkdocs_page_input_path = "fase-0-conceitos/08-ingress.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Ingress</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#o-que-e-um-ingress">O que é um Ingress?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#por-que-usar-um-ingress-em-vez-de-um-service">Por que usar um Ingress em vez de um Service?</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#vantagens-do-ingress">Vantagens do Ingress:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manifesto-yaml-basico-de-um-ingress">Manifesto YAML Básico de um Ingress</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Ingress</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-8-ingress">Conceito 8: Ingress</h1>
+<p>Se um <code>Service</code> do tipo <code>NodePort</code> ou <code>LoadBalancer</code> é como abrir uma porta específica do seu prédio para um apartamento, o <strong>Ingress</strong> é a recepção inteligente e o porteiro do seu cluster. Ele opera na camada 7 (HTTP/S) e permite gerenciar o tráfego externo de forma muito mais sofisticada.</p>
+<h2 id="o-que-e-um-ingress">O que é um Ingress?</h2>
+<p>Um <code>Ingress</code> é um objeto do Kubernetes que define regras para rotear o tráfego HTTP e HTTPS de fora do cluster para os <code>Services</code> dentro do cluster.</p>
+<p>Por si só, criar um recurso <code>Ingress</code> não faz nada. Você precisa de um <strong>Ingress Controller</strong>, que é um Pod especializado que "escuta" os recursos <code>Ingress</code> e implementa as regras de roteamento. Pense no Ingress como o "plano de roteamento" e no Ingress Controller como o "roteador" que executa o plano.</p>
+<p>Exemplos populares de Ingress Controllers são NGINX, Traefik e HAProxy.</p>
+<h2 id="por-que-usar-um-ingress-em-vez-de-um-service">Por que usar um Ingress em vez de um Service?</h2>
+<p><code>Services</code> do tipo <code>NodePort</code> e <code>LoadBalancer</code> operam na camada 4 (TCP/UDP). Eles são ótimos para expor um único serviço, mas se tornam limitados e caros à medida que o número de serviços aumenta.</p>
+<p>Imagine que você tem 10 serviços no seu cluster e quer expô-los publicamente. Com <code>LoadBalancer</code>, você precisaria de 10 balanceadores de carga, um para cada serviço, o que pode custar caro.</p>
+<p>Com um Ingress, você precisa de apenas <strong>um</strong> ponto de entrada (um único Load Balancer para o seu Ingress Controller) e pode usar regras para direcionar o tráfego para dezenas de serviços diferentes.</p>
+<h3 id="vantagens-do-ingress">Vantagens do Ingress:</h3>
+<ul>
+<li>
+<p><strong>Roteamento Baseado em Host</strong>: Direcionar <code>app1.exemplo.com</code> para o <code>Service</code> da App1 e <code>app2.exemplo.com</code> para o <code>Service</code> da App2.</p>
+</li>
+<li>
+<p><strong>Roteamento Baseado em Caminho (Path)</strong>: Direcionar <code>exemplo.com/ui</code> para o <code>Service</code> do frontend e <code>exemplo.com/api</code> para o <code>Service</code> do backend.</p>
+</li>
+<li>
+<p><strong>Terminação TLS/SSL</strong>: O Ingress Controller pode cuidar de toda a complexidade do HTTPS. Ele "termina" a conexão criptografada e encaminha o tráfego em HTTP simples para os seus Pods, que não precisam se preocupar com certificados. Isso centraliza o gerenciamento de certificados em um único lugar.</p>
+</li>
+<li>
+<p><strong>Ponto de Entrada Único</strong>: Simplifica a exposição de múltiplos serviços.</p>
+</li>
+</ul>
+<h2 id="manifesto-yaml-basico-de-um-ingress">Manifesto YAML Básico de um Ingress</h2>
+<p>Este exemplo mostra como rotear o tráfego baseado no host para dois serviços diferentes.</p>
+<pre><code class="language-yaml"># ingress-exemplo.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meu-ingress
+  annotations:
+    # Anotações específicas do Ingress Controller são usadas para configuração
+    # Ex: nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: &quot;cofre.minhaequipe.com&quot;
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vaultwarden-service # Nome do seu Service do Vaultwarden
+            port:
+              number: 80
+  - host: &quot;outra-app.minhaequipe.com&quot;
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: outro-service # Nome de outro Service
+            port:
+              number: 8080
+</code></pre>
+<p><strong>Analisando o manifesto:</strong></p>
+<ul>
+<li>
+<p><strong><code>apiVersion: networking.k8s.io/v1</code></strong>: A API para Ingress.</p>
+</li>
+<li>
+<p><strong><code>metadata.annotations</code></strong>: Essencial para Ingress. É aqui que você passa configurações específicas para o controller, como reescrita de URL, limites de taxa, etc.</p>
+</li>
+<li>
+<p><strong><code>spec.rules</code></strong>: Uma lista de regras de roteamento.</p>
+<ul>
+<li>
+<p><strong><code>host</code></strong>: O nome de domínio ao qual a regra se aplica.</p>
+</li>
+<li>
+<p><strong><code>http.paths</code></strong>: Define os caminhos e para qual <code>backend</code> (serviço) o tráfego deve ir.</p>
+</li>
+<li>
+<p><strong><code>backend.service</code></strong>: Aponta para o <code>Service</code> e a <code>port</code> que receberão o tráfego.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Em resumo, enquanto um <code>Service</code> expõe seus Pods na rede, um <code>Ingress</code> atua como o controlador de tráfego aéreo para seus serviços, decidindo quem vai para onde com base em regras HTTP claras. É a maneira padrão de expor aplicações web no Kubernetes.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../07-namespaces/" class="btn btn-neutral float-left" title="Namespaces"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../fase-1-docker/01-docker/" class="btn btn-neutral float-right" title="Docker">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../07-namespaces/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../fase-1-docker/01-docker/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

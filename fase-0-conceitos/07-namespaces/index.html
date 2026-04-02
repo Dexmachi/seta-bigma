@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Namespaces - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Namespaces";
+        var mkdocs_page_input_path = "fase-0-conceitos/07-namespaces.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Namespaces</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#o-que-e-um-namespace">O que é um Namespace?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#namespaces-padrao">Namespaces Padrão</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#como-trabalhar-com-namespaces">Como Trabalhar com Namespaces</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#comunicacao-entre-namespaces">Comunicação Entre Namespaces</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Namespaces</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-7-namespaces">Conceito 7: Namespaces</h1>
+<p>À medida que um cluster Kubernetes cresce, com mais equipes e projetos compartilhando os mesmos recursos, a organização se torna um desafio. Como evitar que a Equipe A delete acidentalmente um <code>Service</code> da Equipe B porque ambos tinham o mesmo nome?</p>
+<p>A solução é o <strong>Namespace</strong>.</p>
+<h2 id="o-que-e-um-namespace">O que é um Namespace?</h2>
+<ul>
+<li>
+<p><strong>Escopo para Nomes</strong>: Um <code>Namespace</code> fornece um escopo para os nomes dos recursos. O nome de um recurso precisa ser único <em>dentro de um namespace</em>, mas não entre namespaces diferentes. Isso significa que você pode ter um <code>Service</code> chamado <code>meu-banco-de-dados</code> no namespace <code>equipe-a</code> e outro <code>Service</code> com o mesmo nome no namespace <code>equipe-b</code>.</p>
+</li>
+<li>
+<p><strong>Cluster Virtual</strong>: Você pode pensar em um <code>Namespace</code> como um "cluster virtual" dentro do seu cluster físico. Ele permite particionar o cluster em subgrupos.</p>
+</li>
+<li>
+<p><strong>Controle de Acesso e Recursos</strong>: Namespaces são um pilar fundamental para a administração de clusters multi-usuário. Eles permitem:</p>
+<ul>
+<li>
+<p><strong>RBAC (Role-Based Access Control)</strong>: Definir permissões de forma que um usuário só possa ver e modificar os recursos em seu próprio namespace.</p>
+</li>
+<li>
+<p><strong>Resource Quotas</strong>: Limitar a quantidade de recursos (CPU, memória, armazenamento) que um namespace pode consumir no total.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="namespaces-padrao">Namespaces Padrão</h2>
+<p>Quando você cria um cluster Kubernetes, ele vem com alguns namespaces pré-criados:</p>
+<ul>
+<li>
+<p><strong><code>default</code></strong>: O namespace onde seus recursos são criados se você não especificar um. Para projetos pequenos ou de desenvolvimento, muitas pessoas trabalham aqui, mas em ambientes maiores, seu uso é desencorajado.</p>
+</li>
+<li>
+<p><strong><code>kube-system</code></strong>: Onde os componentes do próprio Kubernetes (o cérebro do cluster) são executados, como o <code>etcd</code>, o <code>scheduler</code>, e o <code>api-server</code>. Não toque em nada aqui, a menos que você saiba exatamente o que está fazendo.</p>
+</li>
+<li>
+<p><strong><code>kube-public</code></strong>: Um namespace especial que é legível por todos os usuários (incluindo os não autenticados). Geralmente usado para expor informações do cluster que precisam ser públicas.</p>
+</li>
+<li>
+<p><strong><code>kube-node-lease</code></strong>: Contém objetos de lease que ajudam a determinar a saúde dos nós.</p>
+</li>
+</ul>
+<h2 id="como-trabalhar-com-namespaces">Como Trabalhar com Namespaces</h2>
+<p><strong>1. Criando um Namespace:</strong></p>
+<p>É um objeto simples.</p>
+<pre><code class="language-yaml"># namespace-equipe-a.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: equipe-a
+</code></pre>
+<p>E então: <code>kubectl apply -f namespace-equipe-a.yaml</code></p>
+<p><strong>2. Criando Recursos em um Namespace:</strong></p>
+<p>Você usa o campo <code>metadata.namespace</code> no seu manifesto.</p>
+<pre><code class="language-yaml"># pod-no-namespace.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: meu-pod
+  namespace: equipe-a # &lt;-- AQUI!
+spec:
+  ...
+</code></pre>
+<p><strong>3. Visualizando Recursos em um Namespace:</strong></p>
+<p>A maioria dos comandos <code>kubectl</code> opera no namespace <code>default</code> por padrão. Para especificar outro, use a flag <code>--namespace</code> (ou <code>-n</code>).</p>
+<ul>
+<li>
+<p><code>kubectl get pods --namespace equipe-a</code></p>
+</li>
+<li>
+<p><code>kubectl get pods -n kube-system</code></p>
+</li>
+</ul>
+<p><strong>4. Configurando seu Contexto para um Namespace:</strong></p>
+<p>É tedioso digitar <code>-n</code> toda vez. Você pode alterar o namespace padrão para o seu contexto atual:</p>
+<p><code>kubectl config set-context --current --namespace=equipe-a</code></p>
+<p>Agora, todos os seus comandos <code>kubectl</code> serão executados no namespace <code>equipe-a</code> por padrão. Para voltar:</p>
+<p><code>kubectl config set-context --current --namespace=default</code></p>
+<h2 id="comunicacao-entre-namespaces">Comunicação Entre Namespaces</h2>
+<p>Um Pod no <code>namespace-a</code> pode se comunicar com um <code>Service</code> no <code>namespace-b</code>? Sim!</p>
+<p>O DNS interno do Kubernetes cria registros para os serviços no formato:
+<code>&lt;nome-do-servico&gt;.&lt;nome-do-namespace&gt;.svc.cluster.local</code></p>
+<p>Então, se um Pod no namespace <code>equipe-a</code> quer se conectar ao <code>Service</code> <code>meu-banco-de-dados</code> no namespace <code>equipe-b</code>, ele pode usar o endereço completo:
+<code>meu-banco-de-dados.equipe-b</code></p>
+<p>Se ambos estivessem no mesmo namespace, apenas <code>meu-banco-de-dados</code> seria suficiente.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../06-configmaps-e-secrets/" class="btn btn-neutral float-left" title="ConfigMaps e Secrets"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../08-ingress/" class="btn btn-neutral float-right" title="Ingress">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../06-configmaps-e-secrets/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../08-ingress/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

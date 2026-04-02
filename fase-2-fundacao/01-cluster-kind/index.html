@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Cluster Kind - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Cluster Kind";
+        var mkdocs_page_input_path = "fase-2-fundacao/01-cluster-kind.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-0-conceitos/08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Cluster Kind</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#21-instalando-o-kind">2.1. Instalando o Kind</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#22-criando-o-cluster-basico">2.2. Criando o Cluster Básico</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#23-o-kubeconfig-e-o-acesso-remoto-objetivo-critico">2.3. O Kubeconfig e o Acesso Remoto (Objetivo Crítico)</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 2 - A Fundação (Kubernetes)</li>
+      <li class="breadcrumb-item active">Cluster Kind</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="fase-2-a-fundacao-kubernetes-com-kind">Fase 2: A Fundação (Kubernetes com Kind)</h1>
+<p>Com sua imagem Docker orgulhosamente publicada, é hora de construir o campo de batalha. O Kubernetes é complexo, mas a ferramenta <strong>Kind (Kubernetes in Docker)</strong> permite criar um cluster funcional em minutos, rodando dentro de contêineres Docker na sua própria VM.</p>
+<h2 id="21-instalando-o-kind">2.1. Instalando o Kind</h2>
+<p>Se o Kind ainda não estiver disponível na sua VM, você precisará instalá-lo. A documentação oficial do Kind é sua melhor amiga. Pesquise por "install kind" e siga as instruções para o seu ambiente Linux.</p>
+<h2 id="22-criando-o-cluster-basico">2.2. Criando o Cluster Básico</h2>
+<p>A maneira mais simples de subir um cluster é com um único comando:</p>
+<pre><code class="language-bash">kind create cluster
+</code></pre>
+<p>Este comando cria um cluster com o nome padrão <code>kind</code> e um único nó que funciona como <em>control-plane</em> e <em>worker</em> (ignorem essa nomenclatura, pra vocês que são iniciantes, ela não importa). Para esta operação, é mais do que suficiente.</p>
+<p><strong>Desafio:</strong> Após executar o comando, como você pode verificar se o cluster está realmente no ar e se seus "nós" (contêineres Docker) estão rodando? Que comandos <code>docker</code> e <code>kubectl</code> você usaria?</p>
+<h2 id="23-o-kubeconfig-e-o-acesso-remoto-objetivo-critico">2.3. O Kubeconfig e o Acesso Remoto (Objetivo Crítico)</h2>
+<p>Um dos seus objetivos é entregar um arquivo <code>kubeconfig</code> que permita acesso ao cluster de <em>fora</em> da VM. Por padrão, o Kind configura o <code>kubeconfig</code> para ser acessado apenas de <code>localhost</code> (dentro da VM). Isso não é suficiente para nós.</p>
+<p>Você precisará instruir o Kind a criar um cluster que possa ser acessado pela rede.</p>
+<p><strong>Sua Missão:</strong></p>
+<ol>
+<li>
+<p>Investigue como criar um cluster Kind usando um <strong>arquivo de configuração YAML</strong>.</p>
+</li>
+<li>
+<p>Dentro desse arquivo de configuração, qual parâmetro permite controlar o endereço em que a API do Kubernetes (o <code>apiServer</code>) escuta as conexões?</p>
+</li>
+<li>
+<p><strong>Dica:</strong> O endereço <code>0.0.0.0</code> é um endereço especial em redes que significa "escutar em todas as interfaces de rede disponíveis".</p>
+</li>
+<li>
+<p>Você precisará deletar o cluster anterior (<code>kind delete cluster</code>) e recriá-lo com o arquivo de configuração.</p>
+</li>
+</ol>
+<p>O comando para criar um cluster com um arquivo de configuração se parece com:</p>
+<pre><code class="language-bash">kind create cluster --config seu-arquivo-de-config.yaml
+</code></pre>
+<p><strong>Critério de Sucesso:</strong> O arquivo <code>~/.kube/config</code> gerado na VM, após uma pequena modificação no endereço do servidor (trocando <code>0.0.0.0</code> pelo IP da VM), deve ser capaz de gerenciar o cluster a partir de outra máquina na mesma rede.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../fase-1-docker/01-docker/" class="btn btn-neutral float-left" title="Docker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../fase-3-cofre/01-manifestos/" class="btn btn-neutral float-right" title="Manifestos">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../fase-1-docker/01-docker/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../fase-3-cofre/01-manifestos/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Pods - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Pods";
+        var mkdocs_page_input_path = "fase-0-conceitos/01-pods.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Pods</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#o-que-e-um-pod">O que é um Pod?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#por-que-nao-usar-conteineres-diretamente">Por que não usar contêineres diretamente?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manifesto-yaml-basico-de-um-pod">Manifesto YAML Básico de um Pod</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04-services/">Services</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Pods</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-1-pods">Conceito 1: Pods</h1>
+<p>O <strong>Pod</strong> é a menor unidade de computação que você pode criar e gerenciar no Kubernetes. Ele é o "tijolo" fundamental de qualquer aplicação.</p>
+<h2 id="o-que-e-um-pod">O que é um Pod?</h2>
+<p>Pense em um Pod como um invólucro para um ou mais contêineres (geralmente Docker). Um Pod representa uma única instância da sua aplicação.</p>
+<ul>
+<li>
+<p><strong>Unidade Atômica</strong>: Todos os contêineres dentro de um mesmo Pod são agendados juntos no mesmo nó (máquina física ou virtual) do cluster.</p>
+</li>
+<li>
+<p><strong>Recursos Compartilhados</strong>: Os contêineres em um Pod compartilham o mesmo ambiente de execução:</p>
+<ul>
+<li>
+<p><strong>Rede</strong>: Eles podem se comunicar uns com os outros usando <code>localhost</code>.</p>
+</li>
+<li>
+<p><strong>Volumes de Armazenamento</strong>: Eles podem compartilhar dados através de volumes montados.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Ciclo de Vida Acoplado</strong>: Quando o Pod é iniciado, todos os seus contêineres são iniciados. Quando ele é encerrado, todos são encerrados.</p>
+</li>
+</ul>
+<h2 id="por-que-nao-usar-conteineres-diretamente">Por que não usar contêineres diretamente?</h2>
+<p>O Kubernetes adiciona essa camada de abstração (o Pod) para fornecer um ambiente mais rico e gerenciável. Enquanto 90% das vezes você terá um único contêiner por Pod, o modelo permite padrões avançados, como o "sidecar", onde um contêiner auxiliar (ex: para logging ou proxy) é executado ao lado do contêiner principal da aplicação.</p>
+<h2 id="manifesto-yaml-basico-de-um-pod">Manifesto YAML Básico de um Pod</h2>
+<p>Embora na prática você raramente crie Pods diretamente (você usará <code>Deployments</code>, que veremos a seguir), é importante entender sua estrutura.</p>
+<pre><code class="language-yaml"># pod-exemplo.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: meu-primeiro-pod
+  labels:
+    app: webserver
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+</code></pre>
+<p><strong>Analisando o manifesto:</strong></p>
+<ul>
+<li>
+<p><strong><code>apiVersion: v1</code></strong>: Define a versão da API do Kubernetes para este objeto. Pods "core" estão na <code>v1</code>.</p>
+</li>
+<li>
+<p><strong><code>kind: Pod</code></strong>: O tipo de objeto que estamos criando.</p>
+</li>
+<li>
+<p><strong><code>metadata</code></strong>: Dados sobre o objeto, como seu <code>name</code> (nome) e <code>labels</code> (etiquetas).</p>
+</li>
+<li>
+<p><strong><code>spec</code></strong>: A especificação do estado desejado. É aqui que a mágica acontece.</p>
+</li>
+<li>
+<p><strong><code>spec.containers</code></strong>: Uma lista de um ou mais contêineres que viverão dentro deste Pod.</p>
+<ul>
+<li>
+<p><strong><code>name</code></strong>: Um nome para o contêiner.</p>
+</li>
+<li>
+<p><strong><code>image</code></strong>: A imagem de contêiner a ser usada.</p>
+</li>
+<li>
+<p><strong><code>ports.containerPort</code></strong>: A porta que o contêiner expõe. <strong>Importante:</strong> Isso é apenas informativo para o Kubernetes; não expõe a porta para fora do Pod.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Para criar este Pod, você usaria o comando:
+<code>kubectl apply -f pod-exemplo.yaml</code></p>
+<p>E para ver se ele está rodando:
+<code>kubectl get pods</code></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../prerequisitos/" class="btn btn-neutral float-left" title="Pré-requisitos"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../02-labels-e-selectors/" class="btn btn-neutral float-right" title="Labels e Selectors">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../prerequisitos/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../02-labels-e-selectors/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dexmachina" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Services - Operação Kubernetes - Seta vs Bigma</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Services";
+        var mkdocs_page_input_path = "fase-0-conceitos/04-services.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Operação Kubernetes - Seta vs Bigma
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Início</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../prerequisitos/">Pré-requisitos</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 0 - Conceitos</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../01-pods/">Pods</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02-labels-e-selectors/">Labels e Selectors</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03-deployments/">Deployments</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Services</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#como-um-service-funciona">Como um Service funciona?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tipos-de-service">Tipos de Service</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-clusterip-padrao">1. ClusterIP (Padrão)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-nodeport">2. NodePort</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-loadbalancer">3. LoadBalancer</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05-volumes-e-pvc/">Volumes e PVCs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06-configmaps-e-secrets/">ConfigMaps e Secrets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../07-namespaces/">Namespaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../08-ingress/">Ingress</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 1 - O Aquecimento (Docker)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-1-docker/01-docker/">Docker</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 2 - A Fundação (Kubernetes)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-2-fundacao/01-cluster-kind/">Cluster Kind</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 3 - O Cofre</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-3-cofre/01-manifestos/">Manifestos</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Fase 4 - A Glória</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../fase-4-gloria/01-smtp-tls/">SMTP e TLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Operação Kubernetes - Seta vs Bigma</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Fase 0 - Conceitos</li>
+      <li class="breadcrumb-item active">Services</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="conceito-4-services-clusterip-nodeport-loadbalancer">Conceito 4: Services (ClusterIP, NodePort, LoadBalancer)</h1>
+<p>Um <code>Deployment</code> garante que seus Pods estejam rodando, mas surge um problema: os Pods são efêmeros. Eles podem ser destruídos, recriados, e seus endereços IP internos mudam constantemente. Como outros Pods (ou o mundo externo) podem se conectar a eles de forma confiável?</p>
+<p>A resposta é o <strong>Service</strong>. Um <code>Service</code> é um objeto do Kubernetes que fornece um ponto de entrada de rede estável para um conjunto de Pods.</p>
+<h2 id="como-um-service-funciona">Como um Service funciona?</h2>
+<ol>
+<li>
+<p>Um <code>Service</code> recebe um endereço IP virtual estável (chamado de <code>ClusterIP</code>) que não muda.</p>
+</li>
+<li>
+<p>Ele usa um <strong>seletor de labels</strong> para encontrar continuamente todos os Pods que deve abranger.</p>
+</li>
+<li>
+<p>Quando o tráfego chega ao IP do <code>Service</code>, ele o encaminha e balanceia a carga para um dos Pods saudáveis que correspondem ao seletor.</p>
+</li>
+</ol>
+<p>Isso significa que outras partes da sua aplicação só precisam saber o nome do <code>Service</code>, que é resolvido para o <code>ClusterIP</code> estável pelo DNS interno do Kubernetes. Eles não precisam se preocupar com os IPs dos Pods individuais.</p>
+<h2 id="tipos-de-service">Tipos de Service</h2>
+<p>O tipo de um <code>Service</code> determina como ele é exposto. Os três tipos principais são definidos no campo <code>spec.type</code>.</p>
+<h3 id="1-clusterip-padrao">1. <code>ClusterIP</code> (Padrão)</h3>
+<ul>
+<li>
+<p><strong>O que faz?</strong>: Expõe o <code>Service</code> em um endereço IP interno, acessível <strong>apenas de dentro do cluster</strong>.</p>
+</li>
+<li>
+<p><strong>Quando usar?</strong>: Este é o tipo padrão e o mais comum. Use-o para comunicação entre serviços internos (ex: seu frontend precisa se comunicar com seu backend). Você não quer expor seu banco de dados diretamente para a internet, então você usaria um <code>ClusterIP</code> para ele.</p>
+</li>
+</ul>
+<p><strong>Exemplo YAML:</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: meu-servico-interno
+spec:
+  type: ClusterIP # Este é o padrão, então esta linha é opcional
+  selector:
+    app: meu-backend
+  ports:
+  - protocol: TCP
+    port: 80       # A porta em que o Service escuta
+    targetPort: 8080 # A porta para a qual o tráfego é enviado nos Pods
+</code></pre>
+<h3 id="2-nodeport">2. <code>NodePort</code></h3>
+<ul>
+<li>
+<p><strong>O que faz?</strong>: Além de fazer tudo que um <code>ClusterIP</code> faz, ele também expõe o <code>Service</code> em uma porta estática (a <code>NodePort</code>) em <strong>cada nó</strong> do cluster.</p>
+</li>
+<li>
+<p><strong>Como funciona?</strong>: O Kubernetes aloca uma porta de um intervalo padrão (geralmente 30000-32767). O tráfego para <code>[IP de qualquer nó]:[NodePort]</code> é então encaminhado para o <code>Service</code> e, finalmente, para os Pods.</p>
+</li>
+<li>
+<p><strong>Quando usar?</strong>: Para expor rapidamente um serviço para o mundo exterior durante o desenvolvimento ou para aplicações que não precisam de um balanceador de carga sofisticado. É perfeito para o nosso desafio com o Kind.</p>
+</li>
+</ul>
+<p><strong>Exemplo YAML:</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: meu-servico-externo
+spec:
+  type: NodePort
+  selector:
+    app: meu-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    # nodePort: 30080 # Opcional: Você pode especificar uma porta ou deixar o K8s escolher uma.
+</code></pre>
+<h3 id="3-loadbalancer">3. <code>LoadBalancer</code></h3>
+<ul>
+<li>
+<p><strong>O que faz?</strong>: Além de fazer tudo que um <code>NodePort</code> faz, ele também solicita a criação de um <strong>balanceador de carga externo</strong> do provedor de nuvem (AWS, GCP, Azure, etc.) e o configura para enviar tráfego para o <code>NodePort</code> do <code>Service</code> em todos os nós.</p>
+</li>
+<li>
+<p><strong>Como funciona?</strong>: Este tipo de <code>Service</code> é dependente da infraestrutura subjacente. Se você estiver rodando em um provedor de nuvem, ele provisionará um Classic Load Balancer (AWS), Network Load Balancer (GCP), etc.</p>
+</li>
+<li>
+<p><strong>Quando usar?</strong>: Este é o método padrão para expor um serviço à internet em um ambiente de produção na nuvem. Ele fornece um único endereço IP externo e estável.</p>
+</li>
+<li>
+<p><strong>E no Kind?</strong> O Kind não tem um provedor de nuvem, mas alguns controladores (como o MetalLB) podem ser instalados para simular essa funcionalidade em ambientes locais. Sem eles, um <code>Service</code> do tipo <code>LoadBalancer</code> permanecerá com o status "pending".</p>
+</li>
+</ul>
+<p><strong>Exemplo YAML:</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: meu-servico-de-producao
+spec:
+  type: LoadBalancer
+  selector:
+    app: minha-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9000
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../03-deployments/" class="btn btn-neutral float-left" title="Deployments"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../05-volumes-e-pvc/" class="btn btn-neutral float-right" title="Volumes e PVCs">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../03-deployments/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../05-volumes-e-pvc/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
