@@ -4,7 +4,7 @@ Aqui quem fala é o líder da operação, Dexmachina. Bem-vindos ao campo de bat
 
 O objetivo de vocês nesta tarde é ir do absoluto zero no Kubernetes (*"from zero to hero"*) até colocar um cofre de senhas funcional e resiliente de pé. Vocês foram divididos em duas equipes. O conhecimento de uma equipe completa a outra, mas no fim do dia, apenas uma sairá inteira.
 
-**Lembrete de acesso:** Nas VMs disponibilizadas, garantam que estão operando com as permissões corretas utilizando `su - lappis`.
+**Lembrete de acesso:** Nas VMs disponibilizadas, garantam que estão operando com as permissões corretas utilizando `ssh lappis@<seu_ip>` e `su -`.
 
 ---
 
