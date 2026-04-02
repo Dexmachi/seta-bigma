@@ -59,6 +59,7 @@ A missão só acaba quando os seguintes artefatos forem entregues e validados po
 *   [ ] O cluster Kubernetes está rodando e saudável localmente via Kind.
 *   [ ] Um arquivo **kubeconfig** válido foi entregue *Atenção técnica:* Este arquivo deve permitir o acesso ao cluster de fora da VM (lembrem-se de investigar como expor a API do Kind para a rede local).
 *   [ ] O Vaultwarden está rodando, com os dados persistidos (PVC), e acessível externamente via um `Service` (NodePort ou LoadBalancer).
+*   [ ] Um relatório escrito detalhando features implementadas e como o sistema foi configurado, incluindo o processo de implementação de features extras(se aplicável) escrito e entregue.
 
 ---
 
