@@ -1,0 +1,26 @@
+site_name: Operação Kubernetes - Seta vs Bigma
+site_description: Treinamento prático Kubernetes para construir um cofre de senhas funcional e resiliente.
+site_author: Dexmachina
+theme:
+  name: readthedocs
+
+nav:
+  - Início: index.md
+  - Pré-requisitos: prerequisitos.md
+  - 'Fase 0 - Conceitos':
+    - Pods: fase-0-conceitos/01-pods.md
+    - Labels e Selectors: fase-0-conceitos/02-labels-e-selectors.md
+    - Deployments: fase-0-conceitos/03-deployments.md
+    - Services: fase-0-conceitos/04-services.md
+    - Volumes e PVCs: fase-0-conceitos/05-volumes-e-pvc.md
+    - ConfigMaps e Secrets: fase-0-conceitos/06-configmaps-e-secrets.md
+    - Namespaces: fase-0-conceitos/07-namespaces.md
+    - Ingress: fase-0-conceitos/08-ingress.md
+  - 'Fase 1 - O Aquecimento (Docker)':
+    - Docker: fase-1-docker/01-docker.md
+  - 'Fase 2 - A Fundação (Kubernetes)':
+    - Cluster Kind: fase-2-fundacao/01-cluster-kind.md
+  - 'Fase 3 - O Cofre':
+    - Manifestos: fase-3-cofre/01-manifestos.md
+  - 'Fase 4 - A Glória':
+    - SMTP e TLS: fase-4-gloria/01-smtp-tls.md
