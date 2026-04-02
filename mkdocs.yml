@@ -2,7 +2,29 @@ site_name: Operação Kubernetes - Seta vs Bigma
 site_description: Treinamento prático Kubernetes para construir um cofre de senhas funcional e resiliente.
 site_author: Dexmachina
 theme:
-  name: readthedocs
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Mudar para modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Mudar para modo claro
 
 nav:
   - Início: index.md

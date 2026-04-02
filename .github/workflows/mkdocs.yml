@@ -24,7 +24,7 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install mkdocs
+        run: pip install mkdocs mkdocs-material
 
       - name: Configure Git user
         run: |
